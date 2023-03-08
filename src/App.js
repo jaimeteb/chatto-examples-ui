@@ -4,11 +4,12 @@ import './App.css';
 function Chatbot() {
   const [userInput, setUserInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [senderId, setSenderId] = useState('');
   const messageEndRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newMessage = { sender: 'user', text: userInput };
+    const newMessage = { sender: senderId, text: userInput };
     setUserInput('');
     setMessages([...messages, newMessage]);
     try {
@@ -18,8 +19,11 @@ function Chatbot() {
         body: JSON.stringify(newMessage),
       });
       const data = await response.json();
-      const botMessage = { sender: 'bot', text: data[0].text };
-      setMessages((prevMessages) => [...prevMessages, botMessage]);
+      const botMessages = data.map((message) => ({
+        sender: 'bot',
+        text: message.text,
+      }));
+      setMessages((prevMessages) => [...prevMessages, ...botMessages]);
     } catch (error) {
       console.error(error);
     }
@@ -29,13 +33,17 @@ function Chatbot() {
     messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  useEffect(() => {
+    setSenderId(Math.random().toString(36).substring(2));
+  }, []);
+
   return (
     <div className="chatbot">
       <div className="conversation">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`message ${message.sender === 'user' ? 'sent' : 'received'}`}
+            className={`message ${message.sender === senderId ? 'sent' : 'received'}`}
           >
             {message.text}
           </div>
