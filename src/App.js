@@ -9,6 +9,7 @@ function Chatbot() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!userInput.trim()) return;
     const newMessage = { sender: senderId, text: userInput };
     setUserInput('');
     setMessages([...messages, newMessage]);
