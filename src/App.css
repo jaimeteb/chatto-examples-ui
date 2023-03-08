@@ -20,6 +20,23 @@
   margin-bottom: 10px;
   padding: 10px;
   max-width: 70%;
+
+  position: relative;
+}
+
+.message.image {
+  max-width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message.image img {
+  max-height: 200px;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 10px;
 }
 
 .sent {

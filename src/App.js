@@ -19,10 +19,15 @@ function Chatbot() {
         body: JSON.stringify(newMessage),
       });
       const data = await response.json();
-      const botMessages = data.map((message) => ({
-        sender: 'bot',
-        text: message.text,
-      }));
+      const botMessages = data.flatMap((message) => {
+        if (message.text && message.image) {
+          return [
+            { sender: 'bot', text: message.text },
+            { sender: 'bot', image: message.image },
+          ];
+        }
+        return [{ sender: 'bot', text: message.text, image: message.image }];
+      });
       setMessages((prevMessages) => [...prevMessages, ...botMessages]);
     } catch (error) {
       console.error(error);
@@ -40,14 +45,19 @@ function Chatbot() {
   return (
     <div className="chatbot">
       <div className="conversation">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`message ${message.sender === senderId ? 'sent' : 'received'}`}
-          >
-            {message.text}
-          </div>
-        ))}
+        {messages.map((message, index) => {
+          const isImageMessage = message.image;
+          const messageClass = `message ${message.sender === senderId ? "sent" : "received"} ${isImageMessage ? "image" : ""}`;
+          return (
+            <div key={index} className={messageClass}>
+              {isImageMessage ? (
+                <img src={message.image} alt="message" />
+              ) : (
+                <span>{message.text}</span>
+              )}
+            </div>
+          )
+        })}
         <div ref={messageEndRef} />
       </div>
       <form className="input" onSubmit={handleSubmit}>
