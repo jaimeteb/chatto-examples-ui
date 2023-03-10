@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import './App.css';
+import './hamburger.css';
 
 function Chatbot() {
   const [userInput, setUserInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [senderId, setSenderId] = useState('');
   const messageEndRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,6 +47,14 @@ function Chatbot() {
 
   return (
     <div className="chatbot">
+      <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
+      <div className="menu" style={{ display: menuOpen ? 'block' : 'none' }}>
+        <ul>
+          <li>Menu Item 1</li>
+          <li>Menu Item 2</li>
+          <li>Menu Item 3</li>
+        </ul>
+      </div>
       <div className="conversation">
         {messages.map((message, index) => {
           const isImageMessage = message.image;

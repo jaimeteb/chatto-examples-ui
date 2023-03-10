@@ -1,0 +1,41 @@
+.menu-button {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    font-size: 24px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 2;
+
+    color: #000;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    margin: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
