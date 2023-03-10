@@ -8,6 +8,10 @@ function Chatbot() {
   const [senderId, setSenderId] = useState('');
   const messageEndRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [endpoint, setEndpoint] = useState({
+    alias: 'Local REST Endpoint',
+    url: 'http://localhost:4770/channels/rest'
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +20,7 @@ function Chatbot() {
     setUserInput('');
     setMessages([...messages, newMessage]);
     try {
-      const response = await fetch('http://localhost:4770/channels/rest', {
+      const response = await fetch(endpoint.url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newMessage),
@@ -45,14 +49,33 @@ function Chatbot() {
     setSenderId(Math.random().toString(36).substring(2));
   }, []);
 
+  const handleEndpointChange = (alias, url) => {
+    setEndpoint({ alias, url });
+    setMenuOpen(false);
+  };
+
   return (
     <div className="chatbot">
       <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
-      <div className="menu" style={{ display: menuOpen ? 'block' : 'none' }}>
+      <div className={`menu ${menuOpen ? 'open' : ''}`} >
+        <div className="endpoint-text">
+          Select a chatbot.
+          <br></br>
+          Currently connected to:
+          <br></br>
+          <b>{endpoint.alias}</b>
+        </div>
         <ul>
-          <li>Menu Item 1</li>
-          <li>Menu Item 2</li>
-          <li>Menu Item 3</li>
+          <li>
+            <button onClick={() =>
+              handleEndpointChange('Local REST Endpoint', 'http://localhost:4770/channels/rest')
+            }>Local REST Endpoint</button>
+          </li>
+          <li>
+            <button onClick={() =>
+              handleEndpointChange('Chatto Trivia Pro', 'https://us-central1-jaimeteb.cloudfunctions.net/chatto-trivia-pro-chatto-dev-rest')
+            }>Chatto Trivia Pro</button>
+          </li>
         </ul>
       </div>
       <div className="conversation">

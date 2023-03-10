@@ -25,7 +25,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 50px;
+    /* padding: 50px; */
+
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.menu.open {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .menu ul {
@@ -38,4 +47,10 @@
     margin: 10px;
     font-size: 20px;
     cursor: pointer;
+}
+
+.endpoint-text {
+    font-size: 12px;
+    margin-right: 10px;
+    margin-top: 6px;
 }
