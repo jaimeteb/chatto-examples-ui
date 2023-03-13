@@ -54,6 +54,8 @@ function Chatbot() {
 
   const handleEndpointChange = (alias, url) => {
     setEndpoint({ alias, url });
+    setMessages([])
+    setSenderId(Math.random().toString(36).substring(2));
     setMenuOpen(false);
   };
 
@@ -72,12 +74,16 @@ function Chatbot() {
           <li>
             <button onClick={() =>
               handleEndpointChange('Local REST Endpoint', 'http://localhost:4770/channels/rest')
-            }>Local REST Endpoint</button>
+            }
+              style={{ display: menuOpen ? 'block' : 'none' }}>
+              Local REST Endpoint</button>
           </li>
           <li>
             <button onClick={() =>
               handleEndpointChange('Chatto Trivia Pro', 'https://us-central1-jaimeteb.cloudfunctions.net/chatto-trivia-pro-chatto-dev-rest')
-            }>Chatto Trivia Pro</button>
+            }
+              style={{ display: menuOpen ? 'block' : 'none' }}>
+              Chatto Trivia Pro</button>
           </li>
         </ul>
       </div>
