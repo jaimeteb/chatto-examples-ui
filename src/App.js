@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import './App.css';
 import './hamburger.css';
+import { marked } from 'marked';
 
 function Chatbot() {
   const [userInput, setUserInput] = useState('');
@@ -27,13 +28,15 @@ function Chatbot() {
       });
       const data = await response.json();
       const botMessages = data.flatMap((message) => {
+        const parsedResponse = marked(message.text.replace(/\n/g, '<br>'));
+
         if (message.text && message.image) {
           return [
-            { sender: 'bot', text: message.text },
+            { sender: 'bot', text: parsedResponse },
             { sender: 'bot', image: message.image },
           ];
         }
-        return [{ sender: 'bot', text: message.text, image: message.image }];
+        return [{ sender: 'bot', text: parsedResponse, image: message.image }];
       });
       setMessages((prevMessages) => [...prevMessages, ...botMessages]);
     } catch (error) {
@@ -87,7 +90,7 @@ function Chatbot() {
               {isImageMessage ? (
                 <img src={message.image} alt="message" />
               ) : (
-                <span>{message.text}</span>
+                <div dangerouslySetInnerHTML={{ __html: message.text }} />
               )}
             </div>
           )
